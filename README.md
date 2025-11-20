@@ -36,6 +36,8 @@ pnpm build             # production build
 pnpm start             # serve the production build
 pnpm lint              # Next.js lint (ESLint)
 pnpm test              # Vitest unit tests
+pnpm test:watch        # Vitest in watch mode
+pnpm coverage          # Vitest coverage report
 pnpm db:seed           # seed demo user/todos via MikroORM
 ```
 
