@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
       throw new ApiError(401, "Invalid email or password");
     }
 
-    const tokens = await issueTokensForUser({ id: user.id, email: user.email, name: user.name });
+    const tokens = await issueTokensForUser({ id: user.id, email: user.email, name: user.name, role: user.role });
     return json(tokens);
   } catch (error) {
     return handleError(error);

@@ -4,6 +4,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/http/client";
 import { tokenStorage } from "@/lib/http/token-storage";
 import type { LoginInput, RegisterInput } from "@/lib/validation/auth";
+import type { SessionUser } from "@/types/auth";
 
 const persistTokens = (accessToken: string, refreshToken: string) => {
   tokenStorage.setAccessToken(accessToken);
@@ -12,11 +13,15 @@ const persistTokens = (accessToken: string, refreshToken: string) => {
 
 const clearTokens = () => tokenStorage.clear();
 
+type SessionResponse = {
+  user: SessionUser;
+};
+
 export const useSession = () =>
-  useQuery({
+  useQuery<SessionResponse>({
     queryKey: ["session"],
     queryFn: async () => {
-      const { data } = await api.get("/api/auth/profile");
+      const { data } = await api.get<SessionResponse>("/api/auth/profile");
       return data;
     },
     retry: false,

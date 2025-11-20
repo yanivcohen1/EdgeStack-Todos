@@ -33,7 +33,8 @@ export async function POST(request: NextRequest) {
     const tokens = await rotateRefreshToken(tokenRecord.id, {
       id: tokenRecord.user.id,
       email: tokenRecord.user.email,
-      name: tokenRecord.user.name
+      name: tokenRecord.user.name,
+      role: tokenRecord.user.role
     });
 
     return json(tokens);

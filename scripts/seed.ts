@@ -11,8 +11,10 @@ import { Todo } from "../src/lib/db/entities/Todo";
 import { RefreshToken } from "../src/lib/db/entities/RefreshToken";
 import { TODO_STATUSES } from "../src/types/todo";
 
-const SEED_EMAIL = "demo@todo.dev";
-const SEED_NAME = "Demo User";
+const ADMIN_EMAIL = (process.env.SEED_ADMIN_EMAIL ?? "demo@todo.dev").toLowerCase();
+const ADMIN_NAME = process.env.SEED_ADMIN_NAME ?? process.env.SEED_DEMO_USER_NAME ?? "Demo Admin";
+const USER_EMAIL = (process.env.SEED_USER_EMAIL ?? "user1@todo.dev").toLowerCase();
+const USER_NAME = process.env.SEED_USER_NAME ?? "Workspace User";
 
 const demoTodos = [
   {
@@ -44,28 +46,40 @@ async function seed() {
   await em.nativeDelete(Todo, {});
   await em.nativeDelete(User, {});
 
-  const password = process.env.SEED_DEMO_PASSWORD ?? "ChangeMe123!";
-  const hashedPassword = await bcrypt.hash(password, 10);
+  const adminPassword = process.env.SEED_ADMIN_PASSWORD ?? process.env.SEED_DEMO_PASSWORD ?? "ChangeMe123!";
+  const userPassword = process.env.SEED_USER_PASSWORD ?? adminPassword;
+  const hashedAdminPassword = await bcrypt.hash(adminPassword, 10);
+  const hashedUserPassword = await bcrypt.hash(userPassword, 10);
 
   const now = new Date();
-  const user = em.create(User, {
-    email: SEED_EMAIL,
-    name: SEED_NAME,
-    password: hashedPassword,
+  const adminUser = em.create(User, {
+    email: ADMIN_EMAIL,
+    name: ADMIN_NAME,
+    password: hashedAdminPassword,
     createdAt: now,
-    updatedAt: now
+    updatedAt: now,
+    role: "admin"
   });
-  await em.persistAndFlush(user);
+  const regularUser = em.create(User, {
+    email: USER_EMAIL,
+    name: USER_NAME,
+    password: hashedUserPassword,
+    createdAt: now,
+    updatedAt: now,
+    role: "user"
+  });
+  await em.persistAndFlush([adminUser, regularUser]);
 
   demoTodos.forEach((todo) => {
     const timestamps = { createdAt: new Date(), updatedAt: new Date() };
-    const entity = em.create(Todo, { ...todo, owner: user, ...timestamps });
+    const entity = em.create(Todo, { ...todo, owner: adminUser, ...timestamps });
     em.persist(entity);
   });
   await em.flush();
 
   await orm.close(true);
-  console.log(`Seeded demo account ${SEED_EMAIL} with password ${password}`);
+  console.log(`Seeded admin account ${ADMIN_EMAIL} with password ${adminPassword}`);
+  console.log(`Seeded user account ${USER_EMAIL} with password ${userPassword}`);
 }
 
 seed().catch((error) => {

@@ -19,12 +19,13 @@ export async function POST(request: NextRequest) {
     const user = em.create(User, {
       email: payload.email.toLowerCase(),
       name: payload.name,
-      password: await hashPassword(payload.password)
+      password: await hashPassword(payload.password),
+      role: "user"
     });
 
     await em.persistAndFlush(user);
 
-    const tokens = await issueTokensForUser({ id: user.id, email: user.email, name: user.name });
+    const tokens = await issueTokensForUser({ id: user.id, email: user.email, name: user.name, role: user.role });
     return json(tokens, { status: 201 });
   } catch (error) {
     return handleError(error);

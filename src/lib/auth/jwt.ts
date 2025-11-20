@@ -1,9 +1,11 @@
 import jwt from "jsonwebtoken";
 import { env } from "../env";
+import type { UserRole } from "@/types/auth";
 
 export type AccessTokenPayload = {
   sub: string;
   email: string;
+  role: UserRole;
 };
 
 export type RefreshTokenPayload = {

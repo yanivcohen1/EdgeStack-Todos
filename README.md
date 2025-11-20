@@ -15,7 +15,9 @@ Full-stack Next.js 16 application built with Material UI, MikroORM, and MongoDB 
 
 - Email/password auth with registration, login, logout, and rotating refresh tokens.
 - Role-aware dashboard layouts (admin, inter, main, todo) backed by protected App Router routes.
+- Role-aware dashboard layouts (admin, inter, main, todo) backed by protected App Router routes and filtered navigation.
 - Todo management with filtering, dialog-driven CRUD, and status summaries powered by React Query.
+- Quick profile inspector on the Todo page that pings the API and surfaces the current name + role via snackbar.
 - Built-in rate limiting, password hashing, and JWT session utilities for secure APIs.
 - Responsive Material UI theme with dark/light toggle and reusable layout components.
 - End-to-end test coverage via Vitest + Playwright and seeded demo data for local workflows.
@@ -34,7 +36,8 @@ Duplicate `.env.development` and `.env.production` as needed. Key variables:
 - `JWT_ACCESS_SECRET`, `JWT_REFRESH_SECRET` – symmetric secrets
 - `JWT_ACCESS_TTL_SECONDS`, `JWT_REFRESH_TTL_SECONDS` – token lifetimes (shared across envs)
 - `RATE_LIMIT_WINDOW_MS`, `RATE_LIMIT_MAX_ATTEMPTS` – in-memory limiter controls
-- `SEED_DEMO_PASSWORD` – password used by the seed script
+- `SEED_DEMO_PASSWORD` / `SEED_ADMIN_PASSWORD`, `SEED_USER_PASSWORD` – seed credentials for admin + member accounts
+- `SEED_ADMIN_EMAIL`, `SEED_ADMIN_NAME`, `SEED_USER_EMAIL`, `SEED_USER_NAME` – configure seeded identities
 
 ### Scripts
 
@@ -52,7 +55,12 @@ pnpm db:seed           # seed demo user/todos via MikroORM
 
 ### Seeding
 
-Ensure `DATABASE_URL` and `SEED_DEMO_PASSWORD` are set, then run `pnpm db:seed`. The script wipes users/todos/refresh tokens and repopulates them with a demo account for local testing.
+Ensure `DATABASE_URL` and the desired seed credentials are set, then run `pnpm db:seed`. The script wipes users/todos/refresh tokens and repopulates them with:
+
+- `demo@todo.dev` / `SEED_ADMIN_PASSWORD` – admin role with seeded sample todos
+- `user1@todo.dev` / `SEED_USER_PASSWORD` – standard user without admin privileges
+
+Use the Todo page "Show user info" button to verify which account is active; the snackbar displays the signed-in user's name and role.
 
 ### Development Flow
 

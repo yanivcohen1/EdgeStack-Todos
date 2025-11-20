@@ -8,7 +8,7 @@ import { User } from "../db/entities/User";
 export type AuthTokens = {
   accessToken: string;
   refreshToken: string;
-  user: Pick<User, "id" | "email" | "name">;
+  user: Pick<User, "id" | "email" | "name" | "role">;
 };
 const refreshExpiry = () => new Date(Date.now() + env.jwtRefreshTtlSeconds * 1000);
 
@@ -31,11 +31,11 @@ export const pruneExpiredTokens = async (userId: string) => {
   });
 };
 
-export const issueTokensForUser = async (user: Pick<User, "id" | "email" | "name">): Promise<AuthTokens> => {
+export const issueTokensForUser = async (user: Pick<User, "id" | "email" | "name" | "role">): Promise<AuthTokens> => {
   await pruneExpiredTokens(user.id);
   const refresh = await createRefreshToken(user.id);
 
-  const accessToken = signAccessToken({ sub: user.id, email: user.email });
+  const accessToken = signAccessToken({ sub: user.id, email: user.email, role: user.role });
   const refreshToken = signRefreshToken({ sub: user.id, tokenId: refresh.id });
 
   return {
@@ -47,7 +47,7 @@ export const issueTokensForUser = async (user: Pick<User, "id" | "email" | "name
 
 export const rotateRefreshToken = async (
   tokenId: string,
-  user: Pick<User, "id" | "email" | "name">
+  user: Pick<User, "id" | "email" | "name" | "role">
 ): Promise<AuthTokens> => {
   const em = await getEntityManager();
   await em.nativeDelete(RefreshToken, { id: tokenId });

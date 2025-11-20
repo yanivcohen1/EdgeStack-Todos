@@ -1,7 +1,6 @@
 "use client";
 
 import { FormControlLabel, Paper, Stack, Switch, Typography } from "@mui/material";
-import { InterWorkspaceSection } from "@/components/dashboard/InterWorkspaceSection";
 import { AdminPageLayout, useAdminSwitch } from "../page";
 
 function InterWorkspaceTwoContent() {

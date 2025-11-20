@@ -2,7 +2,6 @@
 
 import { ReactNode, createContext, useContext, useState } from "react";
 import { Box, Button, CircularProgress, FormControlLabel, Paper, Stack, Switch, Typography } from "@mui/material";
-import { InterWorkspaceSection } from "@/components/dashboard/InterWorkspaceSection";
 import { useSession } from "@/hooks/useAuth";
 import { tokenStorage } from "@/lib/http/token-storage";
 
@@ -45,6 +44,17 @@ export function AdminPageLayout({ children }: AdminPageLayoutProps) {
     return (
       <Stack alignItems="center" justifyContent="center" minHeight="70vh">
         <CircularProgress />
+      </Stack>
+    );
+  }
+
+  if (session.user.role !== "admin") {
+    return (
+      <Stack alignItems="center" justifyContent="center" minHeight="70vh" spacing={2}>
+        <Typography variant="h5">You do not have access to the admin console.</Typography>
+        <Button href="/todo" variant="contained">
+          Go to todos
+        </Button>
       </Stack>
     );
   }

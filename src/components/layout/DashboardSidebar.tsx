@@ -59,6 +59,11 @@ export function DashboardSidebar({ onNavigate }: DashboardSidebarProps) {
       .toUpperCase();
   }, [session?.user.name]);
 
+  const isAuthenticated = Boolean(session?.user);
+  const isAdmin = session?.user.role === "admin";
+  const roleLabel = isAuthenticated ? (isAdmin ? "Admin" : "User") : undefined;
+  const visibleNavItems = useMemo(() => navItems.filter((item) => item.label !== "Admin" || isAdmin), [isAdmin]);
+
   const handleNavigate = () => {
     onNavigate?.();
   };
@@ -121,8 +126,6 @@ export function DashboardSidebar({ onNavigate }: DashboardSidebarProps) {
     return pathMatches && currentHash === hashPart;
   };
 
-  const isAuthenticated = Boolean(session?.user);
-
   useEffect(() => {
     const isAdminPath = pathname === "/admin" || pathname.startsWith("/admin/");
     if (!isAdminPath) {
@@ -150,7 +153,7 @@ export function DashboardSidebar({ onNavigate }: DashboardSidebarProps) {
       </Stack>
 
       <List component="nav" disablePadding>
-        {navItems.map((item) => {
+        {visibleNavItems.map((item) => {
           const hasChildren = !!item.children?.length;
           if (!hasChildren) {
             const selected = isAnchorActive(item.href);
@@ -250,6 +253,7 @@ export function DashboardSidebar({ onNavigate }: DashboardSidebarProps) {
             <Typography fontWeight={600}>{session?.user.name ?? "Guest"}</Typography>
             <Typography variant="caption" color="text.secondary">
               {session?.user.email ?? "Access limited"}
+              {roleLabel ? ` • ${roleLabel}` : ""}
             </Typography>
           </Stack>
         </Stack>

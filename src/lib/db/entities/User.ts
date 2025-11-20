@@ -1,5 +1,6 @@
 import { Entity, PrimaryKey, Property, SerializedPrimaryKey, Unique } from "@mikro-orm/core";
 import { ObjectId } from "@mikro-orm/mongodb";
+import type { UserRole } from "@/types/auth";
 
 @Entity({ collection: "users" })
 export class User {
@@ -18,6 +19,9 @@ export class User {
 
   @Property()
   name!: string;
+
+  @Property({ default: "user" })
+  role: UserRole = "user";
 
   @Property({ onCreate: () => new Date() })
   createdAt: Date = new Date();

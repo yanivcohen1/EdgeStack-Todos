@@ -28,3 +28,4 @@
 - Access + refresh tokens share expiration values between environments (900s / 7d). Refresh rotation prunes stale tokens on login.
 - Rate limiting is enforced per-IP in-memory; swap for Redis/Upstash before multi-instance deployment.
 - Passwords are hashed with bcrypt (`10` rounds by default).
+- Users carry a persisted `role` (`admin` or `user`). Admin-only routes/components (console + inter workspaces) check `session.user.role` on the client and API responses only expose role data derived from the database.

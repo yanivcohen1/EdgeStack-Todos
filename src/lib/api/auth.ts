@@ -3,6 +3,7 @@ import { verifyAccessToken } from "../auth/jwt";
 import { ApiError } from "./http";
 import { getEntityManager } from "../db/client";
 import { User } from "../db/entities";
+import type { SessionUser } from "@/types/auth";
 
 export type AuthenticatedContext = {
   user: User;
@@ -38,10 +39,11 @@ export const requireUser = async (request: NextRequest): Promise<AuthenticatedCo
   }
 };
 
-export const toClientUser = (user: User) => ({
+export const toClientUser = (user: User): SessionUser => ({
   id: user.id,
   email: user.email,
-  name: user.name
+  name: user.name,
+  role: user.role
 });
 
 export const getClientIp = (request: NextRequest) =>

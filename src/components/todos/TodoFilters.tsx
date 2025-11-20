@@ -1,7 +1,7 @@
 "use client";
 
 import { DatePicker } from "@mui/x-date-pickers";
-import { Box, MenuItem, Stack, TextField } from "@mui/material";
+import { MenuItem, Stack, TextField } from "@mui/material";
 import { Dispatch, SetStateAction } from "react";
 import type { TodoFilterInput } from "@/lib/validation/todo";
 import type { TodoStatus } from "@/types/todo";
