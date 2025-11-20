@@ -1,13 +1,16 @@
 import { NextRequest } from "next/server";
 import { handleError, json } from "@/lib/api/http";
-import { requireUser } from "@/lib/api/auth";
+import { requireUserWithRoles } from "@/lib/api/auth";
 import { todoFilterSchema, createTodoSchema } from "@/lib/validation/todo";
 import { getEntityManager } from "@/lib/db/client";
 import { Todo, User } from "@/lib/db/entities";
 import type { FilterQuery } from "@mikro-orm/core";
 import { toTodoDTO } from "@/lib/db/serializers/todo";
+import type { UserRole } from "@/types/auth";
 
-const buildFilter = (params: URLSearchParams, owner: User): FilterQuery<Todo> => {
+const TODO_ALLOWED_ROLES: UserRole[] = ["admin", "user"];
+
+const buildFilter = (params: URLSearchParams, viewer: User): FilterQuery<Todo> => {
   const parsed = todoFilterSchema.parse({
     status: params.get("status") || undefined,
     search: params.get("search") || undefined,
@@ -15,7 +18,7 @@ const buildFilter = (params: URLSearchParams, owner: User): FilterQuery<Todo> =>
     dueEnd: params.get("dueEnd") || undefined
   });
 
-  const filter: FilterQuery<Todo> = { owner };
+  const filter: FilterQuery<Todo> = viewer.role === "admin" ? {} : { owner: viewer };
 
   if (parsed.status) {
     filter.status = parsed.status;
@@ -43,9 +46,10 @@ const buildFilter = (params: URLSearchParams, owner: User): FilterQuery<Todo> =>
 
 export async function GET(request: NextRequest) {
   try {
-    const { user } = await requireUser(request);
+    const { user } = await requireUserWithRoles(request, TODO_ALLOWED_ROLES);
     const em = await getEntityManager();
-    const where = buildFilter(request.nextUrl.searchParams, user);
+    const viewerForQuery = user.role === "admin" ? user : em.getReference(User, user.id);
+    const where = buildFilter(request.nextUrl.searchParams, viewerForQuery);
 
     const [todos, total] = await Promise.all([
       em.find(Todo, where, { orderBy: { createdAt: "desc" } }),
@@ -63,13 +67,14 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const { user } = await requireUser(request);
+    const { user } = await requireUserWithRoles(request, TODO_ALLOWED_ROLES);
     const payload = createTodoSchema.parse(await request.json());
     const em = await getEntityManager();
+    const ownerRef = em.getReference(User, user.id);
 
     const todo = em.create(Todo, {
       ...payload,
-      owner: user
+      owner: ownerRef
     });
 
     await em.persistAndFlush(todo);

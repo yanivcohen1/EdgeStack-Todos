@@ -3,7 +3,7 @@ import { verifyAccessToken } from "../auth/jwt";
 import { ApiError } from "./http";
 import { getEntityManager } from "../db/client";
 import { User } from "../db/entities";
-import type { SessionUser } from "@/types/auth";
+import type { SessionUser, UserRole } from "@/types/auth";
 
 export type AuthenticatedContext = {
   user: User;
@@ -45,6 +45,17 @@ export const toClientUser = (user: User): SessionUser => ({
   name: user.name,
   role: user.role
 });
+
+export const requireUserWithRoles = async (
+  request: NextRequest,
+  allowedRoles: ReadonlyArray<UserRole>
+): Promise<AuthenticatedContext> => {
+  const context = await requireUser(request);
+  if (!allowedRoles.includes(context.user.role)) {
+    throw new ApiError(403, "Insufficient permissions");
+  }
+  return context;
+};
 
 export const getClientIp = (request: NextRequest) =>
   request.ip ?? request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";

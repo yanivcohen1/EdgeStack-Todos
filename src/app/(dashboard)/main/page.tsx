@@ -18,16 +18,25 @@ export default function MainPage() {
   const [isProfileCheckPending, setIsProfileCheckPending] = useState(false);
 
   const hasToken = !!tokenStorage.getAccessToken();
+  const isAdmin = session?.user.role === "admin";
 
   const handleShowUserDetails = async () => {
     try {
       setIsProfileCheckPending(true);
-      const { data } = await api.get<{ user: SessionUser }>("/api/auth/profile");
+      const { data } = await api.get<{ user: SessionUser }>("/api/auth/profile", {
+        // params: { scope: "admin-inspect" }
+      });
       const roleLabel = data.user.role === "admin" ? "Admin" : "User";
       showSnackbar({ message: `${data.user.name} • ${roleLabel}`, severity: "info" });
     } catch (error) {
+      let msg = 'server unknown error';
+      if (error instanceof Error) {
+        msg = error.message;
+      } else {
+        msg = String(error);
+      }
       console.error("Failed to fetch user details", error);
-      showSnackbar({ message: "Unable to load user details right now.", severity: "error" });
+      showSnackbar({ message: msg, severity: "error" });
     } finally {
       setIsProfileCheckPending(false);
     }
@@ -73,9 +82,9 @@ export default function MainPage() {
               Stay ahead of your workload with counts per status and due date.
             </Typography>
           </Stack>
-          <Button variant="outlined" onClick={handleShowUserDetails} disabled={isProfileCheckPending}>
-            {isProfileCheckPending ? "Loading..." : "Show user info"}
-          </Button>
+            <Button variant="outlined" onClick={handleShowUserDetails} disabled={isProfileCheckPending}>
+              {isProfileCheckPending ? "Loading..." : "Show user info"}
+            </Button>
         </Stack>
         <TodoStatusSummary todos={summaryTodos} isLoading={isSummaryLoading} />
       </Box>

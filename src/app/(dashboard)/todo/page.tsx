@@ -105,6 +105,8 @@ export default function TodoPage() {
     );
   }
 
+  const isAdmin = session.user.role === "admin";
+
   return (
     <main>
       <Box sx={{ px: { xs: 2, md: 6 }, py: 6 }}>
@@ -114,7 +116,9 @@ export default function TodoPage() {
               Track status
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              search todos, and filter by due ranges. Every todo syncs with MongoDB + MikroORM for reliable persistence.
+              {isAdmin
+                ? "Review every workspace todo, filter by date ranges, and keep tabs on team progress."
+                : "Search your todos, filter by due ranges, and rely on MongoDB + MikroORM for persistence."}
             </Typography>
           </div>
           <Stack direction="row" spacing={2}>
