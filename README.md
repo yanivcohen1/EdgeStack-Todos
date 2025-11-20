@@ -11,6 +11,15 @@ Full-stack Next.js 16 application built with Material UI, MikroORM, and MongoDB 
 - React Hook Form + Zod validation
 - Vitest + Playwright for testing
 
+### Features
+
+- Email/password auth with registration, login, logout, and rotating refresh tokens.
+- Role-aware dashboard layouts (admin, inter, main, todo) backed by protected App Router routes.
+- Todo management with filtering, dialog-driven CRUD, and status summaries powered by React Query.
+- Built-in rate limiting, password hashing, and JWT session utilities for secure APIs.
+- Responsive Material UI theme with dark/light toggle and reusable layout components.
+- End-to-end test coverage via Vitest + Playwright and seeded demo data for local workflows.
+
 ### Prerequisites
 
 - Node 20+
@@ -57,3 +66,22 @@ Ensure `DATABASE_URL` and `SEED_DEMO_PASSWORD` are set, then run `pnpm db:seed`.
 - The app expects a MongoDB connection string at runtime; provide it via environment variables.
 - JWT secrets must be strong, random strings.
 - Rate limiting is in-memory and should be swapped for Redis/Upstash in multi-instance deployments.
+
+### Project Structure
+
+```
+├── docs/                  # Architecture notes and technical overviews
+├── public/                # Static assets served by Next.js
+├── scripts/               # Seed and maintenance scripts (e.g., MikroORM seeding)
+├── src/
+│   ├── app/               # App Router routes (auth, dashboard, API endpoints)
+│   ├── components/        # Reusable UI widgets (auth forms, todos, layout pieces)
+│   ├── hooks/             # Client hooks for auth, theme mode, and todos
+│   ├── lib/               # Env, API, auth, db, and validation helpers
+│   ├── theme/             # Material UI theme tokens
+│   └── types/             # Shared TypeScript models
+├── tests/                 # E2E Playwright specs
+├── eslint.config.mjs      # Next.js lint configuration
+├── next.config.ts         # Next.js runtime config
+└── package.json           # Scripts and dependencies
+```
