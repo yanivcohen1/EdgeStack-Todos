@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Box, Button, CircularProgress, Stack, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Paper, Stack, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { TodoFilters } from "@/components/todos/TodoFilters";
 import { TodoList } from "@/components/todos/TodoList";
@@ -77,7 +77,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <main>
+    <main id="main-section">
       <Box sx={{ px: { xs: 2, md: 6 }, py: 6 }}>
         <Stack direction={{ xs: "column", md: "row" }} justifyContent="space-between" alignItems="center" spacing={3}>
           <div>
@@ -98,7 +98,7 @@ export default function DashboardPage() {
           </Stack>
         </Stack>
 
-        <Box mt={4}>
+        <Box mt={4} id="todo-section">
           <TodoFilters filters={filters} setFilters={setFilters} />
         </Box>
 
@@ -114,6 +114,30 @@ export default function DashboardPage() {
               onDelete={handleDelete}
             />
           )}
+        </Box>
+
+        <Box mt={6} id="inter-section">
+          <Paper sx={{ p: 3, borderRadius: 3 }}>
+            <Stack spacing={1}>
+              <Typography variant="h6">Inter workspace</Typography>
+              <Typography variant="body2" color="text.secondary">
+                Centralize your teammate onboarding tasks and monitor their progress. This section is a placeholder for
+                upcoming collaboration tooling.
+              </Typography>
+            </Stack>
+          </Paper>
+        </Box>
+
+        <Box mt={3} id="admin-section">
+          <Paper sx={{ p: 3, borderRadius: 3 }}>
+            <Stack spacing={1}>
+              <Typography variant="h6">Admin console</Typography>
+              <Typography variant="body2" color="text.secondary">
+                Manage roles, enforce rate limits, and review access logs. The dashboard sidebar links here to mimic the
+                reference layout while the feature is still under construction.
+              </Typography>
+            </Stack>
+          </Paper>
         </Box>
       </Box>
 
