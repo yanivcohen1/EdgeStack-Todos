@@ -39,7 +39,8 @@ export default function MainPage() {
         message = String(error);
       }
       console.error("Failed to fetch user details", error);
-      showSnackbar({ message, severity: "error" });
+      console.error("error msg", message);
+      // showSnackbar({ message, severity: "error" });
     } finally {
       setIsProfileCheckPending(false);
     }
