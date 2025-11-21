@@ -1,11 +1,16 @@
 "use client";
 
-import { Box, Button, CircularProgress, Stack, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Paper, Stack, Typography } from "@mui/material";
+import { useParams, useSearchParams } from "next/navigation";
 import { InterWorkspaceSection } from "@/components/dashboard/InterWorkspaceSection";
 import { useSession } from "@/hooks/useAuth";
 import { tokenStorage } from "@/lib/http/token-storage";
 
-export default function InterWorkspacePage() {
+const formatValue = (value: string | null) => (value ? value : "Not provided");
+
+export default function AdminInterPage() {
+  const params = useParams<{ interId?: string }>();
+  const searchParams = useSearchParams();
   const { data: session, isLoading: sessionLoading, isError: sessionError } = useSession();
   const hasToken = !!tokenStorage.getAccessToken();
 
@@ -39,11 +44,27 @@ export default function InterWorkspacePage() {
     );
   }
 
+  const interId = params?.interId ?? "Unknown";
+  const queryId = formatValue(searchParams.get("id"));
+  const queryName = formatValue(searchParams.get("name"));
+
   return (
     <main>
       <Box sx={{ px: { xs: 2, md: 6 }, py: 6 }}>
-        <Stack spacing={3}>
-          <InterWorkspaceSection />
+        <InterWorkspaceSection />
+      </Box>
+      <Box sx={{ px: { xs: 2, md: 6 }, py: 1 }}>
+        <Stack spacing={1}>
+          <Paper sx={{ p: 3, borderRadius: 3 }}>
+            <Stack spacing={1}>
+              <Typography variant="h4" fontWeight={700}>
+                Inter workspace details
+              </Typography>
+              <Typography variant="body1">inter_id: {interId}</Typography>
+              <Typography variant="body2">Query parameter id: {queryId}</Typography>
+              <Typography variant="body2">Query parameter name: {queryName}</Typography>
+            </Stack>
+          </Paper>
         </Stack>
       </Box>
     </main>

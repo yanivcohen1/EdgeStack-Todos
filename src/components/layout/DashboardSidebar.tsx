@@ -34,7 +34,7 @@ const navItems: NavItem[] = [
     icon: <ShieldRoundedIcon />,
     children: [
       { label: "Console", icon: <ShieldRoundedIcon />, href: "/admin" },
-      { label: "Inter workspace", icon: <DescriptionRoundedIcon />, href: "/admin/nter" }
+      { label: "Inter workspace", icon: <DescriptionRoundedIcon />, href: "/admin/inter/3?id=1&name=yar" }
     ]
   }
 ];
@@ -46,7 +46,7 @@ export function DashboardSidebar({ onNavigate }: DashboardSidebarProps) {
   const { data: session } = useSession();
   const { mutateAsync: logout, isPending: isLoggingOut } = useLogout();
   const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({
-    Admin: false
+    Admin: pathname === "/admin" || pathname.startsWith("/admin/")
   });
 
   const initials = useMemo(() => {
@@ -109,7 +109,11 @@ export function DashboardSidebar({ onNavigate }: DashboardSidebarProps) {
     }
 
     if (!href.includes("#")) {
-      return pathname === href || pathname.startsWith(`${href}/`);
+      const [hrefPath] = href.split("?");
+      if (!hrefPath) {
+        return false;
+      }
+      return pathname === hrefPath || pathname.startsWith(`${hrefPath}/`);
     }
 
     const [pathPart, hashPart] = href.split("#");
@@ -129,14 +133,15 @@ export function DashboardSidebar({ onNavigate }: DashboardSidebarProps) {
 
   useEffect(() => {
     const isAdminPath = pathname === "/admin" || pathname.startsWith("/admin/");
-    if (!isAdminPath) {
-      setExpandedGroups((prev) => {
-        if (!prev.Admin) {
-          return prev;
-        }
+    setExpandedGroups((prev) => {
+      if (isAdminPath && !prev.Admin) {
+        return { ...prev, Admin: true };
+      }
+      if (!isAdminPath && prev.Admin) {
         return { ...prev, Admin: false };
-      });
-    }
+      }
+      return prev;
+    });
   }, [pathname]);
 
   const selectedBgColor = theme.palette.mode === "light" ? darken(theme.palette.primary.main, 0.45) : theme.palette.primary.main;
