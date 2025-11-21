@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { ReactNode, useEffect, useMemo, useState } from "react";
 import { Avatar, Box, Button, Collapse, Divider, List, ListItemButton, ListItemIcon, ListItemText, Stack, Typography } from "@mui/material";
+import { darken, useTheme } from "@mui/material/styles";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import ChecklistRoundedIcon from "@mui/icons-material/ChecklistRounded";
 import DescriptionRoundedIcon from "@mui/icons-material/DescriptionRounded";
@@ -40,6 +41,7 @@ const navItems: NavItem[] = [
 ];
 
 export function DashboardSidebar({ onNavigate }: DashboardSidebarProps) {
+  const theme = useTheme();
   const pathname = usePathname();
   const router = useRouter();
   const { data: session } = useSession();
@@ -138,6 +140,8 @@ export function DashboardSidebar({ onNavigate }: DashboardSidebarProps) {
     }
   }, [pathname]);
 
+  const selectedBgColor = theme.palette.mode === "light" ? darken(theme.palette.primary.main, 0.45) : theme.palette.primary.main;
+
   return (
     <Stack spacing={3} sx={{ minHeight: "100%" }}>
       <Stack direction="row" alignItems="center" justifyContent="space-between" px={1}>
@@ -177,8 +181,20 @@ export function DashboardSidebar({ onNavigate }: DashboardSidebarProps) {
                   px: 2,
                   py: 1,
                   color: selected ? "primary.contrastText" : "text.primary",
-                  bgcolor: selected ? "primary.main" : "transparent",
-                  transition: "background-color 150ms ease"
+                  bgcolor: selected ? selectedBgColor : "transparent",
+                  transition: "background-color 150ms ease",
+                  "& .MuiListItemIcon-root": {
+                    color: selected ? "primary.contrastText" : "inherit"
+                  },
+                  "&:hover": {
+                    bgcolor: selected ? selectedBgColor : "action.hover"
+                  },
+                  "&.Mui-selected": {
+                    bgcolor: selectedBgColor
+                  },
+                  "&.Mui-selected:hover": {
+                    bgcolor: selectedBgColor
+                  }
                 }}
               >
                 <ListItemIcon sx={{ minWidth: 36, color: "inherit" }}>{item.icon}</ListItemIcon>
@@ -226,9 +242,18 @@ export function DashboardSidebar({ onNavigate }: DashboardSidebarProps) {
                           px: 2,
                           py: 1,
                           color: selected ? "primary.contrastText" : "text.secondary",
-                          bgcolor: selected ? "primary.main" : "transparent",
+                          bgcolor: selected ? selectedBgColor : "transparent",
+                          "& .MuiListItemIcon-root": {
+                            color: selected ? "primary.contrastText" : "inherit"
+                          },
                           "&:hover": {
-                            bgcolor: selected ? "primary.main" : "action.hover"
+                            bgcolor: selected ? selectedBgColor : "action.hover"
+                          },
+                          "&.Mui-selected": {
+                            bgcolor: selectedBgColor
+                          },
+                          "&.Mui-selected:hover": {
+                            bgcolor: selectedBgColor
                           }
                         }}
                       >
