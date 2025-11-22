@@ -31,6 +31,15 @@ export function RootProviders({ children }: { children: ReactNode }) {
   });
   const [mode, setMode] = useState<PaletteMode>(prefersDarkMode ? "dark" : "light");
 
+  useEffect(() => {
+    const savedMode = localStorage.getItem("theme-mode") as PaletteMode | null;
+    if (savedMode) {
+      setMode(savedMode);
+    } else {
+      setMode(prefersDarkMode ? "dark" : "light");
+    }
+  }, [prefersDarkMode]);
+
   const loadingBarRef = useRef<LoadingBarRef | null>(null);
 
   useEffect(() => {
@@ -47,7 +56,11 @@ export function RootProviders({ children }: { children: ReactNode }) {
   const theme = useMemo(() => createAppTheme(mode), [mode]);
 
   const toggleMode = () => {
-    setMode((prev) => (prev === "dark" ? "light" : "dark"));
+    setMode((prev) => {
+      const newMode = prev === "dark" ? "light" : "dark";
+      localStorage.setItem("theme-mode", newMode);
+      return newMode;
+    });
   };
 
   return (

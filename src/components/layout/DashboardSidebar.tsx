@@ -183,20 +183,34 @@ export function DashboardSidebar({ onNavigate }: DashboardSidebarProps) {
                   mb: 1,
                   px: 2,
                   py: 1,
-                  color: selected ? "primary.contrastText" : "text.primary",
+                  color: selected ? "#fff" : "text.primary",
                   bgcolor: selected ? selectedBgColor : "transparent",
                   transition: "background-color 150ms ease",
                   "& .MuiListItemIcon-root": {
-                    color: selected ? "primary.contrastText" : "inherit"
+                    color: selected ? "#fff" : "inherit"
                   },
                   "&:hover": {
                     bgcolor: selected ? selectedBgColor : "action.hover"
                   },
                   "&.Mui-selected": {
-                    bgcolor: selectedBgColor
+                    bgcolor: selectedBgColor,
+                    color: "#fff !important",
+                    "& .MuiListItemIcon-root": {
+                      color: "#fff !important"
+                    },
+                    "& .MuiListItemText-primary": {
+                      color: "#fff !important"
+                    }
                   },
                   "&.Mui-selected:hover": {
-                    bgcolor: selectedBgColor
+                    bgcolor: selectedBgColor,
+                    color: "#fff !important",
+                    "& .MuiListItemIcon-root": {
+                      color: "#fff !important"
+                    },
+                    "& .MuiListItemText-primary": {
+                      color: "#fff !important"
+                    }
                   }
                 }}
               >
@@ -244,19 +258,33 @@ export function DashboardSidebar({ onNavigate }: DashboardSidebarProps) {
                           ml: 4,
                           px: 2,
                           py: 1,
-                          color: selected ? "primary.contrastText" : "text.secondary",
+                          color: selected ? "#fff" : "text.secondary",
                           bgcolor: selected ? selectedBgColor : "transparent",
                           "& .MuiListItemIcon-root": {
-                            color: selected ? "primary.contrastText" : "inherit"
+                            color: selected ? "#fff" : "inherit"
                           },
                           "&:hover": {
                             bgcolor: selected ? selectedBgColor : "action.hover"
                           },
                           "&.Mui-selected": {
-                            bgcolor: selectedBgColor
+                            bgcolor: selectedBgColor,
+                            color: "#fff !important",
+                            "& .MuiListItemIcon-root": {
+                              color: "#fff !important"
+                            },
+                            "& .MuiListItemText-primary": {
+                              color: "#fff !important"
+                            }
                           },
                           "&.Mui-selected:hover": {
-                            bgcolor: selectedBgColor
+                            bgcolor: selectedBgColor,
+                            color: "#fff !important",
+                            "& .MuiListItemIcon-root": {
+                              color: "#fff !important"
+                            },
+                            "& .MuiListItemText-primary": {
+                              color: "#fff !important"
+                            }
                           }
                         }}
                       >
