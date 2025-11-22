@@ -9,6 +9,10 @@ export type AuthenticatedContext = {
   user: User;
 };
 
+type NextRequestWithOptionalIp = NextRequest & {
+  ip?: string | null;
+};
+
 const extractBearerToken = (request: NextRequest) => {
   const header = request.headers.get("authorization");
   if (!header) return null;
@@ -54,8 +58,21 @@ export const requireUserWithRoles = async (
   if (!allowedRoles.includes(context.user.role)) {
     throw new ApiError(403, "Insufficient permissions");
   }
+
   return context;
 };
 
-export const getClientIp = (request: NextRequest) =>
-  (request as any).ip ?? request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+export const getClientIp = (request: NextRequest) => {
+  const ipFromRequest = (request as NextRequestWithOptionalIp).ip;
+  if (ipFromRequest) {
+    return ipFromRequest;
+  }
+
+  const forwardedFor = request.headers.get("x-forwarded-for");
+  if (forwardedFor) {
+    const [firstIp] = forwardedFor.split(",");
+    return firstIp?.trim() || "unknown";
+  }
+
+  return "unknown";
+};
