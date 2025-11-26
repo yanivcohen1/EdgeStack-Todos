@@ -7,17 +7,12 @@ const baseTokens = {
   },
   typography: {
     fontFamily: "var(--font-rubik, 'Rubik', system-ui)"
-  },
-  components: {
-    MuiButton: {
-      defaultProps: {
-        variant: "contained"
-      }
-    }
   }
 } as const;
 
 export function createAppTheme(mode: PaletteMode) {
+  const hoverColor = mode === "light" ? "rgba(0, 0, 0, 0.08)" : "rgba(255, 255, 255, 0.08)";
+
   return createTheme({
     ...baseTokens,
     palette: {
@@ -35,7 +30,35 @@ export function createAppTheme(mode: PaletteMode) {
       text:
         mode === "dark"
           ? { primary: "#f4f4f5", secondary: "#c1c1cb" }
-          : { primary: "#0f0f11", secondary: "#575764" }
+          : { primary: "#0f0f11", secondary: "#575764" },
+      action: {
+        hover: hoverColor
+      }
+    },
+    components: {
+      MuiButton: {
+        defaultProps: {
+          variant: "contained"
+        }
+      },
+      MuiMenuItem: {
+        styleOverrides: {
+          root: {
+            '&:hover': {
+              backgroundColor: hoverColor,
+            },
+          },
+        },
+      },
+      MuiListItemButton: {
+        styleOverrides: {
+          root: {
+            '&:hover': {
+              backgroundColor: hoverColor,
+            },
+          },
+        },
+      },
     }
   });
 }
