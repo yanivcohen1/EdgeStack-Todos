@@ -71,8 +71,8 @@ async function seed() {
   await em.persistAndFlush([adminUser, regularUser]);
 
   demoTodos.forEach((todo) => {
-    const timestamps = { createdAt: new Date(), updatedAt: new Date() };
-    const entity = em.create(Todo, { ...todo, owner: adminUser, ...timestamps });
+    // const timestamps = { createdAt: new Date(), updatedAt: new Date() };
+    const entity = em.create(Todo, { ...todo, owner: adminUser, createdAt: new Date(), updatedAt: new Date() });
     em.persist(entity);
   });
   await em.flush();
