@@ -123,12 +123,7 @@ E2E tests are configured to run in Chrome browser. You can run them with or with
 
 Reports include test results, screenshots of failures, and detailed logs. The HTML report is useful for CI/CD pipelines and manual review.
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Main Page
 
 <img width="2730" height="1816" alt="image" src="https://github.com/user-attachments/assets/5e6b062b-1dfb-4574-af68-e1aa70b38ab4" />
 
