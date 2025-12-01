@@ -16,7 +16,7 @@ export function AdminOverviewCard({ adminId }: AdminOverviewCardProps) {
   };
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsAdminMode(false), 0);
+    const timer = setTimeout(() => {setIsAdminMode(false)}, 0);
     return () => clearTimeout(timer);
     // You can add side effects here if needed when isAdminMode changes
   }, [adminId]);
