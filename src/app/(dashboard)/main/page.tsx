@@ -70,26 +70,7 @@ export default function MainPage() {
 
   return (
     <main>
-      <Box sx={{ px: { xs: 2, md: 6 }, py: 6 }}>
-        <Stack
-          direction={{ xs: "column", md: "row" }}
-          justifyContent="space-between"
-          alignItems={{ xs: "flex-start", md: "center" }}
-          spacing={3}
-          mb={4}
-        >
-          <Stack spacing={1}>
-            <Typography variant="h2" fontWeight={700}>
-              Main status board
-            </Typography>
-            <Typography variant="body1" color="text.secondary">
-              Stay ahead of your workload with counts per status and due date.
-            </Typography>
-          </Stack>
-            <Button variant="outlined" onClick={handleShowUserDetails} disabled={isProfileCheckPending}>
-              {isProfileCheckPending ? "Loading..." : "Show user info"}
-            </Button>
-        </Stack>
+      <Box sx={{ px: { xs: 2, md: 6 }, py: 1 }}>
         <TodoStatusSummary todos={summaryTodos} isLoading={isSummaryLoading} />
       </Box>
     </main>
