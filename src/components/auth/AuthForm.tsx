@@ -18,14 +18,14 @@ type Props = {
   isLoading?: boolean;
   error?: string | null;
   onSubmit: (values: LoginInput | RegisterInput) => void;
-  demoPrefill?: {
+  demoUsers?: Array<{
     label: string;
     email: string;
     password: string;
-  };
+  }>;
 };
 
-export function AuthForm({ mode, isLoading, error, onSubmit, demoPrefill }: Props) {
+export function AuthForm({ mode, isLoading, error, onSubmit, demoUsers }: Props) {
   const schema = schemaMap[mode];
   const isRegister = mode === "register";
 
@@ -82,26 +82,31 @@ export function AuthForm({ mode, isLoading, error, onSubmit, demoPrefill }: Prop
       />
 
       <Stack direction="row" justifyContent="space-between" alignItems="center" mt={1}>
-        <Typography variant="caption" color="text.secondary">
-          Tokens refresh automatically every 15 minutes.
-        </Typography>
-        {!isRegister && demoPrefill ? (
-          <Button
-            type="button"
-            size="small"
-            onClick={() => {
-              setValue("email", demoPrefill.email);
-              setValue("password", demoPrefill.password);
-            }}
-          >
-            {demoPrefill.label}
-          </Button>
+        {!isRegister && demoUsers?.length ? (
+          <Stack direction="row" gap={1}>
+            {demoUsers.map((user) => (
+              <Button
+                key={user.label}
+                type="button"
+                size="small"
+                onClick={() => {
+                  setValue("email", user.email);
+                  setValue("password", user.password);
+                }}
+              >
+                {user.label}
+              </Button>
+            ))}
+          </Stack>
         ) : null}
       </Stack>
 
       <Button type="submit" disabled={isLoading} size="large">
         {isRegister ? "Create account" : "Sign in"}
       </Button>
+      <Typography variant="caption" color="text.secondary">
+          Tokens refresh automatically every 15 minutes.
+      </Typography>
     </Box>
   );
 }

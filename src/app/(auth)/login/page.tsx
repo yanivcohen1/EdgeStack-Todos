@@ -19,7 +19,10 @@ export default function LoginPage() {
               mode="login"
               isLoading={isPending}
               error={error?.message ?? null}
-              demoPrefill={{ label: "Log demo", email: "demo@todo.dev", password: "ChangeMe123!" }}
+              demoUsers={[
+                { label: "Log Demo User", email: "user@todo.dev", password: "ChangeMe123!" },
+                { label: "Log Demo Admin", email: "admin@todo.dev", password: "ChangeMe123!" },
+              ]}
               onSubmit={async (values) => {
                 await mutateAsync(values);
                 router.replace("/main");
