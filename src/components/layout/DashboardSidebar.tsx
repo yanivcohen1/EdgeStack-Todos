@@ -9,6 +9,7 @@ import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import ChecklistRoundedIcon from "@mui/icons-material/ChecklistRounded";
 import DescriptionRoundedIcon from "@mui/icons-material/DescriptionRounded";
 import ShieldRoundedIcon from "@mui/icons-material/ShieldRounded";
+import ViewWeekRoundedIcon from "@mui/icons-material/ViewWeekRounded";
 import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import LoginRoundedIcon from "@mui/icons-material/LoginRounded";
@@ -29,6 +30,7 @@ type NavItem = {
 const navItems: NavItem[] = [
   { label: "Main", icon: <HomeRoundedIcon />, href: "/main" },
   { label: "Todo", icon: <ChecklistRoundedIcon />, href: "/todo" },
+  { label: "Jira", icon: <ViewWeekRoundedIcon />, href: "/jira" },
   {
     label: "Admin",
     icon: <ShieldRoundedIcon />,
