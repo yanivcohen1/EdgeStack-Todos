@@ -124,23 +124,23 @@ E2E tests are configured to run in Chrome browser. You can run them with or with
 
 Reports include test results, screenshots of failures, and detailed logs. The HTML report is useful for CI/CD pipelines and manual review.
 
-### Main Page
+## Main Page
 
 <img width="1963" height="1419" alt="image" src="https://github.com/user-attachments/assets/6b13ec2a-3295-46b8-8c5a-0753ccdb039a" />
 
-### Track Status
+## Track Status
 
 <img width="2396" height="1868" alt="image" src="https://github.com/user-attachments/assets/2de00dae-9a42-4b6c-835c-bdd4c8f263de" />
 
-### Agile Scram page
+## Agile Scram page
 
 <img width="2424" height="1713" alt="image" src="https://github.com/user-attachments/assets/183eec4a-aa74-4714-b541-dc21103900f8" />
 
-### Ligth mode
+## Ligth mode
 
 <img width="1965" height="1431" alt="image" src="https://github.com/user-attachments/assets/4572e2c2-d42c-448e-bc74-67a0ccdec1c0" />
 
-### Mobile mode
+## Mobile mode
 
 <img width="1319" height="1424" alt="image" src="https://github.com/user-attachments/assets/17783e4f-6f29-4173-9422-29c5a7835947" />
 
