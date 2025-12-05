@@ -5,7 +5,9 @@ Full-stack Next.js(React) 16 application built with Material UI, MikroORM, and M
 ### Stack
 
 - Next.js 16 (App Router, TypeScript)
+- React 19
 - Material UI 6 + Joy UI helpers
+- @hello-pangea/dnd (Drag and Drop)
 - PrimeReact + PrimeIcons (UI components)
 - MikroORM + MongoDB (compatible with 3.4+)
 - TanStack Query (React Query)
@@ -22,6 +24,7 @@ Full-stack Next.js(React) 16 application built with Material UI, MikroORM, and M
 - Admin console breadcrumb with PrimeReact icons that jumps between `/admin/1` and `/admin/3/user/2?id=1&name=yar`, showing the active admin/user IDs and query params inside shared layout panels, plus an Inter workspace deep-link at `/admin/inter/3?id=1&name=yar` that opens its own guarded page with the legacy Inter content and surfaces `inter_id`, `id`, and `name` parameters.
 - Todo management with filtering, dialog-driven CRUD, and status summaries powered by React Query.
 - Agile Scrum board with drag-and-drop support for managing todo statuses (Backlog, Pending, In Progress, Completed).
+- Inplace editing for tasks on the Agile board (Title, Description, Due Date) with delete functionality.
 - Quick profile inspector on the Todo page that pings the API and surfaces the current name + role via snackbar.
 - Built-in rate limiting, password hashing, and JWT session utilities for secure APIs.
 - Responsive Material UI theme with dark/light toggle and reusable layout components.
