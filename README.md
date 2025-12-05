@@ -133,11 +133,11 @@ Reports include test results, screenshots of failures, and detailed logs. The HT
 
 ## Track Status
 
-<img width="2383" height="1881" alt="image" src="https://github.com/user-attachments/assets/9828bde3-ad5b-4f3a-98c0-2ce1b502190b" />
+<img width="2492" height="1613" alt="image" src="https://github.com/user-attachments/assets/e7a3b031-6816-41d5-bd2f-4247df5e6b31" />
 
 ## Agile Task page
 
-<img width="2411" height="1879" alt="image" src="https://github.com/user-attachments/assets/46ee2e98-7e2d-4af1-b747-59ce6021c03e" />
+<img width="2588" height="1550" alt="image" src="https://github.com/user-attachments/assets/cc8d0d22-bb79-447c-b47d-e34fa16a4573" />
 
 ## Ligth mode
 
