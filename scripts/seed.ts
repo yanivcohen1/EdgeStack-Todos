@@ -22,35 +22,35 @@ const demoTodos = [
     description: "Ensure database connection + migrations are configured.",
     status: TODO_STATUSES[1],
     dueDate: new Date(Date.now() + 1000 * 60 * 60 * 24),
-    duration: 120, // 2 hours
+    duration: 2, // 2 hours
     tags: ["infra", "orm"]
   },
   {
     title: "Implement JWT auth",
     description: "Short-lived access tokens paired with refresh rotation.",
     status: TODO_STATUSES[0],
-    duration: 180, // 3 hours
+    duration: 3, // 3 hours
     tags: ["auth"]
   },
   {
     title: "Polish dashboard UI",
     description: "Filters, dialogs, and optimistic interactions.",
     status: TODO_STATUSES[2],
-    duration: 240, // 4 hours
+    duration: 4, // 4 hours
     tags: ["ui"]
   },
   {
     title: "Setup CI/CD Pipeline",
     description: "Configure GitHub Actions for build and test automation.",
     status: TODO_STATUSES[0],
-    duration: 300, // 5 hours
+    duration: 5, // 5 hours
     tags: ["devops"]
   },
   {
     title: "Write E2E Tests",
     description: "Cover critical user flows with Cypress.",
     status: TODO_STATUSES[1],
-    duration: 480, // 8 hours
+    duration: 8, // 8 hours
     tags: ["testing"]
   }
 ];

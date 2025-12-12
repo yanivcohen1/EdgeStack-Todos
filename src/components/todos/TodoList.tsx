@@ -75,7 +75,7 @@ export function TodoList({ todos, onEdit, onDelete }: Props) {
                 <Chip icon={<Icon />} label={meta.label} color={meta.color} variant="outlined" />
                 {todo.duration ? (
                   <Typography variant="body2" color="text.secondary">
-                    {todo.duration} min
+                    {todo.duration}h
                   </Typography>
                 ) : null}
                 {todo.dueDate ? (

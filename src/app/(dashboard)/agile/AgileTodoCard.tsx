@@ -92,7 +92,7 @@ export function AgileTodoCard({ todo, provided, snapshot, updateTodo, deleteTodo
               <TextField
                 fullWidth
                 size="small"
-                label="Duration (min)"
+                label="Duration (hours)"
                 type="number"
                 value={duration}
                 onChange={(e) => setDuration(e.target.value === "" ? "" : Number(e.target.value))}
@@ -174,7 +174,7 @@ export function AgileTodoCard({ todo, provided, snapshot, updateTodo, deleteTodo
         )}
         {todo.duration && (
           <Typography variant="caption" display="block" color="text.secondary">
-            Duration: {todo.duration} min
+            Duration: {todo.duration}h
           </Typography>
         )}
         <Box sx={{ position: "absolute", top: 8, right: 8 }}>
