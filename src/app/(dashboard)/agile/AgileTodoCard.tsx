@@ -151,7 +151,7 @@ export function AgileTodoCard({ todo, provided, snapshot, updateTodo, deleteTodo
       {...dragHandleProps}
       sx={{
         cursor: "grab",
-        "&:hover": { boxShadow: theme.shadows[4] },
+        "&:hover": { boxShadow: theme.shadows[4], bgcolor: theme.palette.action.hover },
         transition: "box-shadow 0.2s",
         position: "relative",
         ...draggableProps.style,
