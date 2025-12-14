@@ -1,7 +1,8 @@
 "use client";
 
 import { DatePicker } from "@mui/x-date-pickers";
-import { MenuItem, Stack, TextField } from "@mui/material";
+import { MenuItem, Stack, TextField, IconButton, Tooltip } from "@mui/material";
+import { Clear as ClearIcon } from "@mui/icons-material";
 import { Dispatch, SetStateAction } from "react";
 import type { TodoFilterInput } from "@/lib/validation/todo";
 import type { TodoStatus } from "@/types/todo";
@@ -53,7 +54,7 @@ export function TodoFilters({ filters, setFilters }: Props) {
         sx={{ "& .MuiInputBase-root": { height: 40 } }}
       />
 
-      <Stack direction={{ xs: "column", md: "row" }} spacing={2} sx={{ minWidth: 280 }}>
+      <Stack direction={{ xs: "column", md: "row" }} spacing={2} sx={{ minWidth: 280 }} alignItems="center">
         <DatePicker
           label="Due start"
           value={filters.dueStart ?? null}
@@ -90,6 +91,23 @@ export function TodoFilters({ filters, setFilters }: Props) {
             }
           }}
         />
+        {(filters.dueStart || filters.dueEnd) && (
+          <Tooltip title="Clear dates">
+            <IconButton
+              size="small"
+              onClick={() =>
+                setFilters((prev) => ({
+                  ...prev,
+                  dueStart: undefined,
+                  dueEnd: undefined,
+                  page: 1
+                }))
+              }
+            >
+              <ClearIcon />
+            </IconButton>
+          </Tooltip>
+        )}
       </Stack>
     </Stack>
   );
