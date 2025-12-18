@@ -5,6 +5,8 @@ import { getEntityManager } from "../db/client";
 import { User } from "../db/entities";
 import type { SessionUser, UserRole } from "@/types/auth";
 
+const TODO_ALLOWED_ROLES: UserRole[] = ["admin", "user"];
+
 export type AuthenticatedContext = {
   user: User;
 };
@@ -52,7 +54,7 @@ export const toClientUser = (user: User): SessionUser => ({
 
 export const requireUserWithRoles = async (
   request: NextRequest,
-  allowedRoles: ReadonlyArray<UserRole>
+  allowedRoles: ReadonlyArray<UserRole> = TODO_ALLOWED_ROLES
 ): Promise<AuthenticatedContext> => {
   const context = await requireUser(request);
   if (!allowedRoles.includes(context.user.role)) {
