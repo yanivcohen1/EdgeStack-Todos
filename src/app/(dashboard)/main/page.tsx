@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Box, Button, CircularProgress, Stack, Typography } from "@mui/material";
 import { TodoStatusSummary } from "@/components/todos/TodoStatusSummary";
 import { useSession } from "@/hooks/useAuth";
@@ -13,13 +14,20 @@ export default function MainPage() {
   const unfilteredKey = useMemo<Partial<TodoFilterInput>>(() => ({}), []);
   const { data: summaryData, isLoading: summaryLoading } = useTodos(unfilteredKey);
   const [isMounted, setIsMounted] = useState(false);
+  const router = useRouter();
+
+  const hasToken = !!tokenStorage.getAccessToken();
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsMounted(true);
   }, []);
 
-  const hasToken = !!tokenStorage.getAccessToken();
+  useEffect(() => {
+    if (isMounted && (!hasToken || sessionError) && !sessionLoading) {
+      router.push('/login');
+    }
+  }, [isMounted, hasToken, sessionError, sessionLoading, router]);
 
   if (!isMounted) {
     return (
@@ -31,11 +39,8 @@ export default function MainPage() {
 
   if ((!hasToken || sessionError) && !sessionLoading) {
     return (
-      <Stack alignItems="center" justifyContent="center" minHeight="70vh" spacing={2}>
-        <Typography variant="h5">Please sign in to review the main status board.</Typography>
-        <Button href="/login" variant="contained">
-          Go to login
-        </Button>
+      <Stack alignItems="center" justifyContent="center" minHeight="70vh">
+        <CircularProgress />
       </Stack>
     );
   }

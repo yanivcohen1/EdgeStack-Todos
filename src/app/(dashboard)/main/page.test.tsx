@@ -7,6 +7,13 @@ const mockUseTodos = vi.fn();
 const mockGetAccessToken = vi.fn();
 const mockApiGet = vi.fn();
 const mockShowSnackbar = vi.fn();
+const mockRouterPush = vi.fn();
+
+vi.mock("next/navigation", () => ({
+  useRouter: () => ({
+    push: mockRouterPush
+  })
+}));
 
 vi.mock("@/hooks/useAuth", () => ({
   useSession: () => mockUseSession()
@@ -49,7 +56,7 @@ describe("MainPage", () => {
     });
   });
 
-  it("prompts for login when no session is available", () => {
+  it("redirects to login when no session is available", async () => {
     mockGetAccessToken.mockReturnValue(undefined);
     mockUseSession.mockReturnValue({
       data: undefined,
@@ -59,9 +66,8 @@ describe("MainPage", () => {
 
     render(<MainPage />);
 
-    expect(
-      screen.getByText("Please sign in to review the main status board.")
-    ).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /go to login/i })).toBeInTheDocument();
+    await waitFor(() => {
+      expect(mockRouterPush).toHaveBeenCalledWith('/login');
+    });
   });
 });

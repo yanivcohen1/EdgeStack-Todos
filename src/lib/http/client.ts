@@ -19,34 +19,18 @@ const resolveMessage = (message: unknown, fallback: string) => {
   return typeof message === "string" && message.trim().length > 0 ? message : fallback;
 };
 
-const createErrorNotifier = () => {
-  let shown = false;
-
-  const notify = (message: unknown, fallback: string) => {
-    if (shown) return;
-    showSnackbar({
-      message: resolveMessage(message, fallback),
-      severity: "error"
-    });
-    shown = true;
-  };
-
-  return {
-    fromResponse: (response: AxiosResponse<unknown> | undefined, fallback: string) => {
-      const data = response?.data as ErrorPayload | undefined;
-      if (data?.message) {
-        notify(data?.message, fallback);
-        return;
-      } else if (data?.error) {
-        notify(data?.error, fallback);
-        return;
-      }
-      const data2 = JSON.stringify(response?.data ?? undefined, null, 2);
-      notify(data2, fallback);
-    },
-    fromMessage: (message: unknown, fallback: string) => notify(message, fallback)
-  };
-};
+const notifyFromError = (error: AxiosError<ErrorPayload> | unknown, fallback: string) => {
+  let message: string;
+  if (axios.isAxiosError(error)) {
+    message = error.response?.data?.message || error.response?.data?.error || error.message
+  } else {
+    message = fallback || 'Something went wrong';
+  }
+  showSnackbar({
+    message: message,
+    severity: "error"
+  });
+}
 
 const refreshTokens = async () => {
   const refreshToken = tokenStorage.getRefreshToken();
@@ -89,10 +73,6 @@ api.interceptors.response.use(
     loadingBarController.finishRequest();
     const { response, config } = error;
     const requestConfig = config as RetriableRequestConfig | undefined;
-    const notifier = createErrorNotifier();
-    const notifyFromResponse = notifier.fromResponse;
-    const notifyFromMessage = notifier.fromMessage;
-
     const unauthorizedFallback = "Unauthorized request. Please sign in again.";
     const genericFallback = "An error occurred while processing your request.";
     const refreshFallback = "Unable to refresh your session. Please sign in again.";
@@ -100,7 +80,7 @@ api.interceptors.response.use(
     if (response?.status === 401) {
       if (!requestConfig || requestConfig.__isRetryRequest) {
         tokenStorage.clear();
-        notifyFromResponse(response, unauthorizedFallback);
+        notifyFromError(error, unauthorizedFallback);
         return Promise.reject(error);
       }
 
@@ -115,23 +95,17 @@ api.interceptors.response.use(
           return api(requestConfig);
         }
       } catch (refreshError) {
-        if (axios.isAxiosError(refreshError)) {
-          if(refreshError.response) {
-            notifyFromResponse(refreshError.response, refreshFallback);
-          } else {
-            notifyFromMessage(refreshError.message, refreshFallback);
-          }
-        } else {
-          notifyFromMessage(null, refreshFallback);
-        }
+        // Redirect to login on refresh failure
+        // window.location.href = '/login';
       } finally {
         refreshPromise = null;
       }
 
       tokenStorage.clear();
-      notifyFromResponse(response, unauthorizedFallback);
+      // Redirect to login on unauthorized
+      window.location.href = '/login';
     } else {
-      notifyFromResponse(response, genericFallback);
+      notifyFromError(error, genericFallback);
     }
 
     return Promise.reject(error);
